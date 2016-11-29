@@ -1,5 +1,12 @@
 package com.zzw.john.parttime.service;
 
+import com.zzw.john.parttime.bean.BaseBean;
+import com.zzw.john.parttime.bean.EmployerBeanAll;
+
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+import rx.Observable;
+
 /**
  * Created by john on 2016/11/1.
  * 所有的 api接口
@@ -7,5 +14,20 @@ package com.zzw.john.parttime.service;
 
 public interface Api {
     //baseUri
-    String API_SERVER_URL = "http://www.weather.com.cn/";
+    String API_SERVER_URL = "http://z160e02960.iask.in/webservice/";
+
+    //注册
+    @POST("employee/register")
+    Observable<BaseBean> register(
+            @Query("nickname") String nickname,
+            @Query("password") String password
+    );
+
+    //登录
+    @POST("employee/login")
+    Observable<EmployerBeanAll> login(
+            @Query("nickname") String nickname,
+            @Query("password") String password
+    );
+
 }

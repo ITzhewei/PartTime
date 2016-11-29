@@ -3,13 +3,25 @@ package com.zzw.john.parttime.model.register;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.zzw.john.parttime.R;
+import com.zzw.john.parttime.bean.BaseBean;
+import com.zzw.john.parttime.componments.RetrofitClient;
+import com.zzw.john.parttime.service.Api;
+import com.zzw.john.parttime.utils.UIUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import retrofit2.Retrofit;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by john on 2016/11/1.
@@ -25,10 +37,42 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.btn_back)
     BootstrapButton mBtnBack;
 
+    Retrofit mRetrofit;
+    Api api;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        mRetrofit = RetrofitClient.getmRetrofit();
+        api = mRetrofit.create(Api.class);
+    }
+
+    @OnClick({R.id.btn_register, R.id.btn_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_register:
+                String nickname = mEtUsername.getText().toString().trim();
+                String password = mEtPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(nickname) && TextUtils.isEmpty(password)) {
+                    UIUtils.showToast("不能为空,请重新输入");
+                    break;
+                } else {
+                    Observable<BaseBean> register = api.register(nickname, password);
+                    register.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Action1<BaseBean>() {
+                                @Override
+                                public void call(BaseBean baseBean) {
+                                    UIUtils.showToast(baseBean.getFlag());
+                                }
+                            });
+                }
+                break;
+            case R.id.btn_back:
+                finish();
+                break;
+        }
     }
 }
