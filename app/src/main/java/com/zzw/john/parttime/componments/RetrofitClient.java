@@ -16,7 +16,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    public static Retrofit mRetrofit;
+    private static Retrofit mRetrofit;
+
+    private RetrofitClient(){}
 
     public static Retrofit getmRetrofit() {
         if (mRetrofit == null) {

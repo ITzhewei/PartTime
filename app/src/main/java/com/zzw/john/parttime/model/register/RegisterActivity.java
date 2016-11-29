@@ -10,14 +10,13 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.bean.BaseBean;
-import com.zzw.john.parttime.componments.RetrofitClient;
+import com.zzw.john.parttime.componments.ApiClient;
 import com.zzw.john.parttime.service.Api;
 import com.zzw.john.parttime.utils.UIUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Retrofit;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -28,6 +27,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class RegisterActivity extends AppCompatActivity {
+
     @BindView(R.id.et_username)
     BootstrapEditText mEtUsername;
     @BindView(R.id.et_password)
@@ -37,7 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.btn_back)
     BootstrapButton mBtnBack;
 
-    Retrofit mRetrofit;
     Api api;
 
     @Override
@@ -45,8 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
-        mRetrofit = RetrofitClient.getmRetrofit();
-        api = mRetrofit.create(Api.class);
+        api = ApiClient.getApi();
     }
 
     @OnClick({R.id.btn_register, R.id.btn_back})

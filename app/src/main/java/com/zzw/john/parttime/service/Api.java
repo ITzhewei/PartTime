@@ -2,7 +2,9 @@ package com.zzw.john.parttime.service;
 
 import com.zzw.john.parttime.bean.BaseBean;
 import com.zzw.john.parttime.bean.EmployerBeanAll;
+import com.zzw.john.parttime.bean.JobBean;
 
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -22,12 +24,16 @@ public interface Api {
             @Query("nickname") String nickname,
             @Query("password") String password
     );
-
     //登录
     @POST("employee/login")
     Observable<EmployerBeanAll> login(
             @Query("nickname") String nickname,
             @Query("password") String password
+    );
+    //得到全部兼职
+    @GET("jpb/queryAllTypeJob")
+    Observable<JobBean> queryAllTypeJob(
+
     );
 
 }
