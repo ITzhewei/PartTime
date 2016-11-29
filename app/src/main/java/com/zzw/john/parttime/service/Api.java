@@ -24,6 +24,7 @@ public interface Api {
             @Query("nickname") String nickname,
             @Query("password") String password
     );
+
     //登录
     @POST("employee/login")
     Observable<EmployerBeanAll> login(
@@ -31,7 +32,7 @@ public interface Api {
             @Query("password") String password
     );
     //得到全部兼职
-    @GET("jpb/queryAllTypeJob")
+    @GET("job/queryAllTypeJob")
     Observable<JobBean> queryAllTypeJob(
 
     );

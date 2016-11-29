@@ -1,17 +1,20 @@
 package com.zzw.john.parttime.model.index;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.youth.banner.Banner;
 import com.zzw.john.parttime.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by john on 2016/11/1.
@@ -33,12 +36,26 @@ public class IndexFragment extends Fragment {
     };
     @BindView(R.id.banner)
     Banner mBanner;
+    @BindView(R.id.img_t1)
+    ImageView mImgT1;
+    @BindView(R.id.img_t2)
+    ImageView mImgT2;
+    @BindView(R.id.img_t3)
+    ImageView mImgT3;
+    @BindView(R.id.img_t4)
+    ImageView mImgT4;
+    @BindView(R.id.img_t_left)
+    ImageView mImgTLeft;
+    @BindView(R.id.img_t_right_1)
+    ImageView mImgTRight1;
+    @BindView(R.id.img_t_right_2)
+    ImageView mImgTRight2;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_index, null);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         mBanner.setBannerStyle(Banner.CIRCLE_INDICATOR);
         mBanner.setIndicatorGravity(Banner.CENTER);
@@ -47,5 +64,27 @@ public class IndexFragment extends Fragment {
         mBanner.setImages(images);
 
         return view;
+    }
+
+    @OnClick({R.id.img_t1, R.id.img_t2, R.id.img_t3, R.id.img_t4, R.id.img_t_left, R.id.img_t_right_1, R.id.img_t_right_2})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_t1:
+                Intent alljob = new Intent(getActivity(), AllJobActivity.class);
+                startActivity(alljob);
+                break;
+            case R.id.img_t2:
+                break;
+            case R.id.img_t3:
+                break;
+            case R.id.img_t4:
+                break;
+            case R.id.img_t_left:
+                break;
+            case R.id.img_t_right_1:
+                break;
+            case R.id.img_t_right_2:
+                break;
+        }
     }
 }
