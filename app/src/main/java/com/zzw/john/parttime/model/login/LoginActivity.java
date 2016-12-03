@@ -11,6 +11,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.zzw.john.parttime.MainActivity;
 import com.zzw.john.parttime.R;
+import com.zzw.john.parttime.base.MyApplication;
 import com.zzw.john.parttime.bean.EmployerBeanAll;
 import com.zzw.john.parttime.componments.ApiClient;
 import com.zzw.john.parttime.model.register.RegisterActivity;
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                                 public void call(EmployerBeanAll employerBeanAll) {
                                     String flag = employerBeanAll.getFlag();
                                     if (flag.equals("true")) {
+                                        MyApplication.employerBean = employerBeanAll.getEmployer();
                                         Intent main = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(main);
                                     } else {
