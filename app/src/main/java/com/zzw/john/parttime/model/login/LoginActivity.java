@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.google.gson.Gson;
 import com.zzw.john.parttime.MainActivity;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
@@ -25,6 +26,7 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.observers.Observers;
 import rx.schedulers.Schedulers;
 
 /**

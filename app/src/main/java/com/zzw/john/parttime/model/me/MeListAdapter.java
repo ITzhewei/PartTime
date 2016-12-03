@@ -26,7 +26,7 @@ public class MeListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -52,6 +52,8 @@ public class MeListAdapter extends BaseAdapter {
             listNameTV.setText("我的简历");
         }else if (position==1){
             listNameTV.setText("我的报名");
+        }else {
+            listNameTV.setText("发布兼职");
         }
         return convertView;
     }

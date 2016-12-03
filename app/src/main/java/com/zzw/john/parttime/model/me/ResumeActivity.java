@@ -2,11 +2,14 @@ package com.zzw.john.parttime.model.me;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatCallback;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +22,34 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.zzw.john.parttime.MainActivity;
 import com.zzw.john.parttime.R;
+import com.zzw.john.parttime.base.MyApplication;
+import com.zzw.john.parttime.bean.BaseBean;
+import com.zzw.john.parttime.bean.EmployerBeanAll;
+import com.zzw.john.parttime.componments.ApiClient;
+import com.zzw.john.parttime.model.login.LoginActivity;
+import com.zzw.john.parttime.service.Api;
 import com.zzw.john.parttime.utils.UIUtils;
 
 import java.util.Calendar;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
 public class ResumeActivity extends AppCompatActivity {
 
+    private TextView userNameTV;
     private EditText intentET,commentET;
     private LinearLayout intentLLO,intentEditLLO,commentLLO,commentEditLLO;
     private ListView meInfoLV;
+    private ProgressDialog progressDialog;
+
+    private EmployerBeanAll.EmployerBean employer=MyApplication.employerBean;
+
+    Api api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +57,7 @@ public class ResumeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_me_resume);
 
+        userNameTV=(TextView)findViewById(R.id.userNameTV);
         intentET=(EditText)findViewById(R.id.intentET);
         commentET=(EditText)findViewById(R.id.commentET);
         intentLLO=(LinearLayout)findViewById(R.id.intentLLO);
@@ -43,7 +65,11 @@ public class ResumeActivity extends AppCompatActivity {
         commentLLO=(LinearLayout)findViewById(R.id.commentLLO);
         commentEditLLO=(LinearLayout)findViewById(R.id.commentEditLLO);
         meInfoLV=(ListView)findViewById(R.id.meInfoLV);
-        meInfoLV.setAdapter(new MeInfoListAdapter(UIUtils.getContext()));
+        meInfoLV.setAdapter(new MeInfoListAdapter(UIUtils.getContext(),employer));
+
+        api = ApiClient.getApi();
+
+        initData();
 
         meInfoLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -54,24 +80,32 @@ public class ResumeActivity extends AppCompatActivity {
                 editText.setTextColor(Color.rgb(0,0,0));
                 switch (position){
                     case 0:
-                        new AlertDialog.Builder(ResumeActivity.this).setTitle("请输入昵称").setView(editText).
-                                setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        itemInfoTV.setText(editText.getText());
-                                    }
-                                }).setNegativeButton("取消",null).show();
-                        break;
-                    case 1:
                         new AlertDialog.Builder(ResumeActivity.this).setTitle("请输入真实姓名").setView(editText).
                                 setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        itemInfoTV.setText(editText.getText());
+                                        progressDialog.setMessage("请稍等");
+                                        progressDialog.show();
+                                        Observable<BaseBean> register = api.updateName(employer.getId(),editText.getText().toString());
+                                        register.subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(new Action1<BaseBean>() {
+                                                    @Override
+                                                    public void call(BaseBean baseBean) {
+                                                        progressDialog.dismiss();
+                                                        if (baseBean.getFlag().equals("true")) {
+                                                            UIUtils.showToast("更改成功");
+                                                            employer.setName(editText.getText().toString());
+                                                            itemInfoTV.setText(editText.getText());
+                                                        } else {
+                                                            UIUtils.showToast("更改失败,请重试");
+                                                        }
+                                                    }
+                                                });
                                     }
                                 }).setNegativeButton("取消",null).show();
                         break;
-                    case 2:
+                    case 1:
                         Calendar calendar= Calendar.getInstance();
                         final int yearCurrent, monthCurrent, dayCurrent;
 
@@ -82,25 +116,64 @@ public class ResumeActivity extends AppCompatActivity {
                         new DatePickerDialog(ResumeActivity.this, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                itemInfoTV.setText(Integer.toString(yearCurrent-year));
+                                progressDialog.setMessage("请稍等");
+                                progressDialog.show();
+                                final Integer age=new Integer(yearCurrent-year);
+                                Observable<BaseBean> register = api.updateAge(employer.getId(),age);
+                                register.subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Action1<BaseBean>() {
+                                            @Override
+                                            public void call(BaseBean baseBean) {
+                                                progressDialog.dismiss();
+                                                if (baseBean.getFlag().equals("true")) {
+                                                    UIUtils.showToast("更改成功");
+                                                    employer.setAge(age);
+                                                    itemInfoTV.setText(Integer.toString(age));
+                                                } else {
+                                                    UIUtils.showToast("更改失败,请重试");
+                                                }
+                                            }
+                                        });
                             }
                         }, yearCurrent, monthCurrent, dayCurrent).show();
                         break;
-                    case 3:
+                    case 2:
                         new AlertDialog.Builder(ResumeActivity.this).setTitle("选择性别").
                                 setSingleChoiceItems(new String[]{"男","女"},-1,new DialogInterface.OnClickListener(){
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        final String sex;
+                                        String gender=null;
                                         if (which==0)
-                                            itemInfoTV.setText("男");
+                                            gender="男";
                                         else
-                                            itemInfoTV.setText("女");
+                                            gender="女";
+                                        sex=gender;
+                                        progressDialog.setMessage("请稍等");
+                                        progressDialog.show();
+                                        Observable<BaseBean> register = api.updateSex(employer.getId(),sex);
+                                        register.subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(new Action1<BaseBean>() {
+                                                    @Override
+                                                    public void call(BaseBean baseBean) {
+                                                        progressDialog.dismiss();
+                                                        if (baseBean.getFlag().equals("true")) {
+                                                            UIUtils.showToast("更改成功");
+                                                            employer.setSex(sex);
+                                                            itemInfoTV.setText(sex);
+                                                        } else {
+                                                            UIUtils.showToast("更改失败,请重试");
+                                                        }
+                                                    }
+                                                });
                                         dialog.dismiss();
                                     }
 
                                 }).show();
                         break;
-                    case 4:
+                    case 3:
                         final Dialog statureDialog = new Dialog(ResumeActivity.this);
                         statureDialog.setContentView(R.layout.meinfopicker_dialog);
 
@@ -108,16 +181,16 @@ public class ResumeActivity extends AppCompatActivity {
                         final NumberPicker statureNP = (NumberPicker) statureDialog.findViewById(R.id.statureNP);
                         final Button statureCfmBtn=(Button)statureDialog.findViewById(R.id.confirmBtn);
 
-                        statureNP.setMaxValue(25);
-                        statureNP.setMinValue(7);
+                        statureNP.setMaxValue(250);
+                        statureNP.setMinValue(70);
                         if (initValue.equals(""))
-                            statureNP.setValue(16);
+                            statureNP.setValue(160);
                         else
-                            statureNP.setValue(Integer.parseInt(initValue.split("0cm")[0]));
+                            statureNP.setValue(Integer.parseInt(initValue.split("cm")[0]));
                         statureNP.setFormatter(new NumberPicker.Formatter() {
                             @Override
                             public String format(int value) {
-                                return Integer.toString(value)+"0cm";
+                                return Integer.toString(value)+"cm";
                             }
                         });
 
@@ -127,7 +200,24 @@ public class ResumeActivity extends AppCompatActivity {
                         statureCfmBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                itemInfoTV.setText(Integer.toString(statureNP.getValue())+"0cm");
+                                progressDialog.setMessage("请稍等");
+                                progressDialog.show();
+                                Observable<BaseBean> register = api.updateHeight(employer.getId(),statureNP.getValue());
+                                register.subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Action1<BaseBean>() {
+                                            @Override
+                                            public void call(BaseBean baseBean) {
+                                                progressDialog.dismiss();
+                                                if (baseBean.getFlag().equals("true")) {
+                                                    UIUtils.showToast("更改成功");
+                                                    employer.setHeight(statureNP.getValue());
+                                                    itemInfoTV.setText(Integer.toString(statureNP.getValue())+"cm");
+                                                } else {
+                                                    UIUtils.showToast("更改失败,请重试");
+                                                }
+                                            }
+                                        });
                                 statureDialog.dismiss();
                             }
                         });
@@ -135,7 +225,7 @@ public class ResumeActivity extends AppCompatActivity {
                         statureDialog.show();
 
                         break;
-                    case 5:
+                    case 4:
                         final Dialog schoolDialog=new Dialog(ResumeActivity.this);
                         schoolDialog.setContentView(R.layout.meinfopicker_dialog);
 
@@ -154,13 +244,32 @@ public class ResumeActivity extends AppCompatActivity {
                         schoolCfmBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                itemInfoTV.setText(schools[schoolNP.getValue()]);
+                                progressDialog.setMessage("请稍等");
+                                progressDialog.show();
+                                Observable<BaseBean> register = api.updateSchoolName(employer.getId(),schools[schoolNP.getValue()]);
+                                register.subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Action1<BaseBean>() {
+                                            @Override
+                                            public void call(BaseBean baseBean) {
+                                                progressDialog.dismiss();
+                                                if (baseBean.getFlag().equals("true")) {
+                                                    UIUtils.showToast("更改成功");
+                                                    employer.setSchoolName(schools[schoolNP.getValue()]);
+                                                    itemInfoTV.setText(schools[schoolNP.getValue()]);
+                                                } else {
+                                                    UIUtils.showToast("更改失败,请重试");
+                                                }
+                                            }
+                                        });
                                 schoolDialog.dismiss();
                             }
                         });
 
                         schoolDialog.show();
 
+                        break;
+                    case 5:
                         break;
                     default:
                         break;
@@ -188,6 +297,16 @@ public class ResumeActivity extends AppCompatActivity {
 
     }
 
+    private void initData() {
+        userNameTV.setText(employer.getNickname());
+        if (employer.getIntent()!=null)
+            intentET.setText(employer.getIntent());
+        if (employer.getAdvantage()!=null)
+            commentET.setText(employer.getAdvantage());
+        progressDialog=new ProgressDialog(ResumeActivity.this);
+        progressDialog.setCancelable(false);
+    }
+
     private void addOptionBtn(final LinearLayout superLayout, final int source){
         //source 1:兼职意向 2:个人评价
         final LinearLayout newLayout=new LinearLayout(this);
@@ -210,10 +329,47 @@ public class ResumeActivity extends AppCompatActivity {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String editContent;
+
+                progressDialog.setMessage("请稍等");
+                progressDialog.show();
+
                 if (source==1){
+                    editContent=intentET.getText().toString();
+                    Observable<BaseBean> register = api.updateIntent(employer.getId(),editContent);
+                    register.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Action1<BaseBean>() {
+                                @Override
+                                public void call(BaseBean baseBean) {
+                                    progressDialog.dismiss();
+                                    if (baseBean.getFlag().equals("true")) {
+                                        UIUtils.showToast("更改成功");
+                                        employer.setIntent(editContent);
+                                    } else {
+                                        UIUtils.showToast("更改失败,请重试");
+                                    }
+                                }
+                            });
                     intentEditLLO.setVisibility(View.VISIBLE);
                     intentET.setInputType(InputType.TYPE_NULL);
                 }else {
+                    editContent=commentET.getText().toString();
+                    Observable<BaseBean> register = api.updateAdvantage(employer.getId(),editContent);
+                    register.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Action1<BaseBean>() {
+                                @Override
+                                public void call(BaseBean baseBean) {
+                                    progressDialog.dismiss();
+                                    if (baseBean.getFlag().equals("true")) {
+                                        UIUtils.showToast("更改成功");
+                                        employer.setAdvantage(editContent);
+                                    } else {
+                                        UIUtils.showToast("更改失败,请重试");
+                                    }
+                                }
+                            });
                     commentEditLLO.setVisibility(View.VISIBLE);
                     commentET.setInputType(InputType.TYPE_NULL);
                 }

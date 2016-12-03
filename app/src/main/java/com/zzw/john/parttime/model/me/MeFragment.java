@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.zzw.john.parttime.R;
+import com.zzw.john.parttime.base.MyApplication;
 
 /**
  * Created by john on 2016/11/1.
@@ -20,11 +22,15 @@ import com.zzw.john.parttime.R;
 public class MeFragment extends Fragment {
 
     private ListView choiceLV;
+    private TextView userNameTV;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_me, null);
+
+        userNameTV=(TextView)view.findViewById(R.id.userNameTV);
+        userNameTV.setText(MyApplication.employerBean.getNickname());
 
         choiceLV=(ListView)view.findViewById(R.id.choiceLV);
         choiceLV.setAdapter(new MeListAdapter(getContext()));
@@ -36,6 +42,8 @@ public class MeFragment extends Fragment {
                     intent=new Intent(getActivity(),ResumeActivity.class);
                 }else if (position==1){
                     intent=new Intent(getActivity(),EnrollActivitiy.class);
+                }else {
+                    intent=new Intent(getActivity(),ReleaseActivity.class);
                 }
                 startActivity(intent);
             }

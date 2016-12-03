@@ -14,7 +14,6 @@ public class BaseBean {
     private String flag;
 
 
-
     public String getFlag() {
         return flag;
     }
