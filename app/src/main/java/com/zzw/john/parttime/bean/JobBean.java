@@ -1,5 +1,6 @@
 package com.zzw.john.parttime.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class JobBean {
     }
 
 
-    public static class JobListBean {
+    public static class JobListBean implements Serializable {
         private String address;
         private String employerID;
         private int id;
@@ -29,6 +30,21 @@ public class JobBean {
         private String salary;
         private String sex;
         private String type;
+
+        @Override
+        public String toString() {
+            return "JobListBean{" +
+                    "address='" + address + '\'' +
+                    ", employerID='" + employerID + '\'' +
+                    ", id=" + id +
+                    ", name='" + name + '\'' +
+                    ", num=" + num +
+                    ", remark='" + remark + '\'' +
+                    ", salary='" + salary + '\'' +
+                    ", sex='" + sex + '\'' +
+                    ", type='" + type + '\'' +
+                    '}';
+        }
 
         public String getAddress() {
             return address;

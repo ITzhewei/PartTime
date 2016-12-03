@@ -34,7 +34,7 @@ public interface Api {
     //得到全部兼职
     @GET("job/queryAllTypeJob")
     Observable<JobBean> queryAllTypeJob(
-
     );
 
+    //
 }

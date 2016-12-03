@@ -16,6 +16,7 @@ import com.zzw.john.parttime.bean.EmployerBeanAll;
 import com.zzw.john.parttime.componments.ApiClient;
 import com.zzw.john.parttime.model.register.RegisterActivity;
 import com.zzw.john.parttime.service.Api;
+import com.zzw.john.parttime.utils.ShareP;
 import com.zzw.john.parttime.utils.UIUtils;
 
 import butterknife.BindView;
@@ -48,7 +49,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         api = ApiClient.getApi();
+        initView();
     }
+
+    private void initView() {
+        mEtUsername.setText(ShareP.getString("nickname"));
+        mEtPassword.setText(ShareP.getString("password"));
+    }
+
 
     @OnClick({R.id.btn_login, R.id.btn_register})
     public void onClick(View view) {
@@ -60,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                     UIUtils.showToast("不能为空,请重新输入");
                     break;
                 } else {
+                    ShareP.setString("nickname",nickname);
+                    ShareP.setString("password",password);
                     Observable<EmployerBeanAll> register = api.login(nickname, password);
                     register.subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -68,7 +78,9 @@ public class LoginActivity extends AppCompatActivity {
                                 public void call(EmployerBeanAll employerBeanAll) {
                                     String flag = employerBeanAll.getFlag();
                                     if (flag.equals("true")) {
+                                        //保存个人信息
                                         MyApplication.employerBean = employerBeanAll.getEmployer();
+                                        //跳转主页
                                         Intent main = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(main);
                                     } else {

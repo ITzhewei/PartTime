@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.zzw.john.parttime.bean.EmployerBeanAll;
 
 /**
@@ -34,6 +35,8 @@ public class MyApplication extends Application {
         mainThreadId = android.os.Process.myTid(); //myTid(线程id) Pid(进程id) Uid(用户的id)
         looper = getMainLooper(); //主线程的 looper
         handler = new Handler();  //得到handler (主线程)
+        //bootstrap
+        TypefaceProvider.registerDefaultIconSets();
 
     }
 

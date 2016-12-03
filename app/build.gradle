@@ -58,4 +58,7 @@ dependencies {
     //轮播
     compile 'com.youth.banner:banner:1.1.5'
 
+    //波纹
+    compile 'com.github.traex.rippleeffect:library:1.3'
+
 }

@@ -1,6 +1,7 @@
 package com.zzw.john.parttime.model.index;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,7 +63,7 @@ public class AllJobActivity extends AppCompatActivity {
 
     private void initView() {
         mRlAlljob.setLayoutManager(new LinearLayoutManager(this));
-        mProgressDialog=new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this);
         mProgressDialog.show();
     }
 
@@ -93,22 +94,33 @@ public class AllJobActivity extends AppCompatActivity {
             return jobList.size();
         }
 
-        private class MyHolder extends RecyclerView.ViewHolder {
+        private class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             TextView mTvName;
             TextView mTvSalay;
             TextView mTvAddress;
+
+            JobBean.JobListBean mJobListBean;
 
             public MyHolder(View itemView) {
                 super(itemView);
                 mTvName = (TextView) itemView.findViewById(R.id.tv_name);
                 mTvSalay = (TextView) itemView.findViewById(R.id.tv_salay);
                 mTvAddress = (TextView) itemView.findViewById(R.id.tv_address);
+                itemView.setOnClickListener(this);
             }
 
             public void bindView(JobBean.JobListBean jobListBean) {
+                mJobListBean=jobListBean;
                 mTvName.setText(jobListBean.getName());
                 mTvSalay.setText(jobListBean.getSalary());
                 mTvAddress.setText(jobListBean.getAddress());
+            }
+
+            @Override
+            public void onClick(View v) {
+                Intent jobDetail = new Intent(AllJobActivity.this, JobDetailActivity.class);
+                jobDetail.putExtra("bean",mJobListBean);
+                startActivity(jobDetail);
             }
         }
     }
