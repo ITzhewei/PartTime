@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.orhanobut.logger.Logger;
 import com.zzw.john.parttime.MainActivity;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
@@ -23,8 +24,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -68,14 +69,25 @@ public class LoginActivity extends AppCompatActivity {
                     UIUtils.showToast("不能为空,请重新输入");
                     break;
                 } else {
-                    ShareP.setString("nickname",nickname);
-                    ShareP.setString("password",password);
+                    ShareP.setString("nickname", nickname);
+                    ShareP.setString("password", password);
                     Observable<EmployeeBeanAll> register = api.login(nickname, password);
                     register.subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<EmployeeBeanAll>() {
+                            .subscribe(new Subscriber<EmployeeBeanAll>() {
                                 @Override
-                                public void call(EmployeeBeanAll employeeBeanAll) {
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Logger.d(e);
+                                    UIUtils.showToast("超时,请重试!");
+                                }
+
+                                @Override
+                                public void onNext(EmployeeBeanAll employeeBeanAll) {
                                     String flag = employeeBeanAll.getFlag();
                                     if (flag.equals("true")) {
                                         //保存个人信息
@@ -88,6 +100,21 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                    //                            .subscribe(new Action1<EmployeeBeanAll>() {
+                    //                                @Override
+                    //                                public void call(EmployeeBeanAll employeeBeanAll) {
+                    //                                    String flag = employeeBeanAll.getFlag();
+                    //                                    if (flag.equals("true")) {
+                    //                                        //保存个人信息
+                    //                                        MyApplication.employerBean = employeeBeanAll.getEmployee();
+                    //                                        //跳转主页
+                    //                                        Intent main = new Intent(LoginActivity.this, MainActivity.class);
+                    //                                        startActivity(main);
+                    //                                    } else {
+                    //                                        UIUtils.showToast("登录失败,请重试");
+                    //                                    }
+                    //                                }
+                    //                            });
                 }
 
                 break;

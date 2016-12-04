@@ -1,5 +1,6 @@
 package com.zzw.john.parttime.service;
 
+import com.zzw.john.parttime.bean.AddBean;
 import com.zzw.john.parttime.bean.BaseBean;
 import com.zzw.john.parttime.bean.EmployeeBeanAll;
 import com.zzw.john.parttime.bean.JobBean;
@@ -43,6 +44,13 @@ public interface   Api {
     );
 
 
+    //报名一个兼职
+    @POST("statusrecord/add")
+    Observable<AddBean> add(
+            @Query("employeeID") Integer employeeID,
+            @Query("employerID") Integer employerID,
+            @Query("jobID") Integer jobID
+    );
 
     //更改真实姓名
     @POST("employee/update")
