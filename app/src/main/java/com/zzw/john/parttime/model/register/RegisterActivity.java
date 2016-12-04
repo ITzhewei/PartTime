@@ -18,8 +18,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -60,12 +60,27 @@ public class RegisterActivity extends AppCompatActivity {
                     Observable<BaseBean> register = api.register(nickname, password);
                     register.subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<BaseBean>() {
+                            .subscribe(new Subscriber<BaseBean>() {
                                 @Override
-                                public void call(BaseBean baseBean) {
-                                    UIUtils.showToast(baseBean.getFlag());
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    UIUtils.showToast("超时,请重试!");
+                                }
+
+                                @Override
+                                public void onNext(BaseBean baseBean) {
+                                    if (baseBean.getFlag().equals("true")) {
+                                        UIUtils.showToast("注册成功!");
+                                    } else {
+                                        UIUtils.showToast("注册失败,请重试!");
+                                    }
                                 }
                             });
+
                 }
                 break;
             case R.id.btn_back:

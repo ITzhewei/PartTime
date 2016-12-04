@@ -22,8 +22,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class AllJobActivity extends AppCompatActivity {
@@ -49,15 +49,29 @@ public class AllJobActivity extends AppCompatActivity {
         Observable<JobBean> jobBeanObservable = mApi.queryAllTypeJob();
         jobBeanObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<JobBean>() {
-                    @Override
-                    public void call(JobBean jobBean) {
-                        List<JobBean.JobListBean> jobList = jobBean.getJobList();
-                        //设置
-                        mRlAlljob.setAdapter(new MyAdapter(jobList));
-                        mProgressDialog.dismiss();
-                    }
-                });
+                .subscribe(new Subscriber<JobBean>() {
+                               @Override
+                               public void onCompleted() {
+
+                               }
+
+                               @Override
+                               public void onError(Throwable e) {
+                                   UIUtils.showToast("超时,请重试!");
+                               }
+
+                               @Override
+                               public void onNext(JobBean jobBean) {
+                                   List<JobBean.JobListBean> jobList = jobBean.getJobList();
+                                   //设置
+                                   mRlAlljob.setAdapter(new MyAdapter(jobList));
+                                   mProgressDialog.dismiss();
+
+                               }
+
+                           }
+
+                );
     }
 
 
@@ -110,7 +124,7 @@ public class AllJobActivity extends AppCompatActivity {
             }
 
             public void bindView(JobBean.JobListBean jobListBean) {
-                mJobListBean=jobListBean;
+                mJobListBean = jobListBean;
                 mTvName.setText(jobListBean.getName());
                 mTvSalay.setText(jobListBean.getSalary());
                 mTvAddress.setText(jobListBean.getAddress());
@@ -119,7 +133,7 @@ public class AllJobActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent jobDetail = new Intent(AllJobActivity.this, JobDetailActivity.class);
-                jobDetail.putExtra("bean",mJobListBean);
+                jobDetail.putExtra("bean", mJobListBean);
                 startActivity(jobDetail);
             }
         }

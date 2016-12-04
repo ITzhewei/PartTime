@@ -47,7 +47,7 @@ public class ResumeActivity extends AppCompatActivity {
     private ListView meInfoLV;
     private ProgressDialog progressDialog;
 
-    private EmployeeBeanAll.EmployeeBean employer=MyApplication.employerBean;
+    private EmployeeBeanAll.EmployeeBean employer=MyApplication.employeeBean;
 
     Api api;
 

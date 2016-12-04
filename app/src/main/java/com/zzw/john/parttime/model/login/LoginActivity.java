@@ -79,19 +79,17 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onCompleted() {
 
                                 }
-
                                 @Override
                                 public void onError(Throwable e) {
                                     Logger.d(e);
                                     UIUtils.showToast("超时,请重试!");
                                 }
-
                                 @Override
                                 public void onNext(EmployeeBeanAll employeeBeanAll) {
                                     String flag = employeeBeanAll.getFlag();
                                     if (flag.equals("true")) {
                                         //保存个人信息
-                                        MyApplication.employerBean = employeeBeanAll.getEmployee();
+                                        MyApplication.employeeBean = employeeBeanAll.getEmployee();
                                         //跳转主页
                                         Intent main = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(main);
@@ -100,21 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                    //                            .subscribe(new Action1<EmployeeBeanAll>() {
-                    //                                @Override
-                    //                                public void call(EmployeeBeanAll employeeBeanAll) {
-                    //                                    String flag = employeeBeanAll.getFlag();
-                    //                                    if (flag.equals("true")) {
-                    //                                        //保存个人信息
-                    //                                        MyApplication.employerBean = employeeBeanAll.getEmployee();
-                    //                                        //跳转主页
-                    //                                        Intent main = new Intent(LoginActivity.this, MainActivity.class);
-                    //                                        startActivity(main);
-                    //                                    } else {
-                    //                                        UIUtils.showToast("登录失败,请重试");
-                    //                                    }
-                    //                                }
-                    //                            });
                 }
 
                 break;

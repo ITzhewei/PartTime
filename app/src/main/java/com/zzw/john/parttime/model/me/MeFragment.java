@@ -1,6 +1,5 @@
 package com.zzw.john.parttime.model.me;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,7 +33,7 @@ public class MeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_me, null);
 
         userNameTV=(TextView)view.findViewById(R.id.userNameTV);
-        userNameTV.setText(MyApplication.employerBean.getNickname());
+        userNameTV.setText(MyApplication.employeeBean.getNickname());
 
         choiceLV=(ListView)view.findViewById(R.id.choiceLV);
         choiceLV.setAdapter(new MeListAdapter());

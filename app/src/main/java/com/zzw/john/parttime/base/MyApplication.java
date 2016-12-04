@@ -24,7 +24,7 @@ public class MyApplication extends Application {
     private static Handler handler;
 
     //保存的个人信息
-    public static EmployeeBeanAll.EmployeeBean employerBean;
+    public static EmployeeBeanAll.EmployeeBean employeeBean;
 
     @Override
     public void onCreate() {

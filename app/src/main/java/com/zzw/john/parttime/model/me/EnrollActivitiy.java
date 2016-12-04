@@ -16,7 +16,6 @@ import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
 import com.zzw.john.parttime.bean.JobBean;
 import com.zzw.john.parttime.componments.ApiClient;
-import com.zzw.john.parttime.model.index.AllJobActivity;
 import com.zzw.john.parttime.model.index.JobDetailActivity;
 import com.zzw.john.parttime.service.Api;
 import com.zzw.john.parttime.utils.UIUtils;
@@ -57,8 +56,8 @@ public class EnrollActivitiy extends AppCompatActivity {
     }
 
     private void initData() {
-        System.out.println(MyApplication.employerBean.getId());
-        Observable<JobBean> jobBeanObservable = api.queryStatusRecordByEmployeeID(MyApplication.employerBean.getId());
+        System.out.println(MyApplication.employeeBean.getId());
+        Observable<JobBean> jobBeanObservable = api.queryStatusRecordByEmployeeID(MyApplication.employeeBean.getId());
         jobBeanObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<JobBean>() {

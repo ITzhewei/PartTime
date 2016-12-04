@@ -15,7 +15,7 @@ import rx.Observable;
  * 所有的 api接口
  */
 
-public interface   Api {
+public interface Api {
     //baseUri
     String API_SERVER_URL = "http://z160e02960.iask.in/webservice/";
 
@@ -32,6 +32,7 @@ public interface   Api {
             @Query("nickname") String nickname,
             @Query("password") String password
     );
+
     //得到全部兼职
     @GET("job/queryAllTypeJob")
     Observable<JobBean> queryAllTypeJob(
@@ -47,7 +48,7 @@ public interface   Api {
     //报名一个兼职
     @POST("statusrecord/add")
     Observable<AddBean> add(
-            @Query("employeeID") Integer employeeID,
+            @Query("employeeID") String employeeID,
             @Query("employerID") Integer employerID,
             @Query("jobID") Integer jobID
     );
