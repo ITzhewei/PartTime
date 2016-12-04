@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatCallback;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,13 +23,11 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import com.zzw.john.parttime.MainActivity;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
 import com.zzw.john.parttime.bean.BaseBean;
 import com.zzw.john.parttime.bean.EmployerBeanAll;
 import com.zzw.john.parttime.componments.ApiClient;
-import com.zzw.john.parttime.model.login.LoginActivity;
 import com.zzw.john.parttime.service.Api;
 import com.zzw.john.parttime.utils.UIUtils;
 
@@ -74,10 +73,12 @@ public class ResumeActivity extends AppCompatActivity {
         meInfoLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+
                 final EditText editText=new EditText(UIUtils.getContext());
                 final ViewGroup viewGroup=(ViewGroup) meInfoLV.getChildAt(position);
                 final TextView itemInfoTV=(TextView)viewGroup.getChildAt(1);
                 editText.setTextColor(Color.rgb(0,0,0));
+
                 switch (position){
                     case 0:
                         new AlertDialog.Builder(ResumeActivity.this).setTitle("请输入真实姓名").setView(editText).
@@ -270,6 +271,34 @@ public class ResumeActivity extends AppCompatActivity {
 
                         break;
                     case 5:
+                        final EditText phoneET=new EditText(UIUtils.getContext());
+                        phoneET.setTextColor(Color.BLACK);
+                        phoneET.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+                        new AlertDialog.Builder(ResumeActivity.this).setTitle("请输入电话号码").setView(phoneET).
+                                setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        progressDialog.setMessage("请稍等");
+                                        progressDialog.show();
+                                        Observable<BaseBean> register = api.updatePhone(employer.getId(),phoneET.getText().toString());
+                                        register.subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(new Action1<BaseBean>() {
+                                                    @Override
+                                                    public void call(BaseBean baseBean) {
+                                                        progressDialog.dismiss();
+                                                        if (baseBean.getFlag().equals("true")) {
+                                                            UIUtils.showToast("更改成功");
+                                                            employer.setPhone(phoneET.getText().toString());
+                                                            itemInfoTV.setText(phoneET.getText().toString());
+                                                        } else {
+                                                            UIUtils.showToast("更改失败,请重试");
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }).setNegativeButton("取消",null).show();
+
                         break;
                     default:
                         break;

@@ -73,6 +73,13 @@ public interface   Api {
             @Query("schoolName") String schoolName
     );
 
+    //更改电话号码
+    @POST("employee/update")
+    Observable<BaseBean> updatePhone(
+            @Query("id") Integer id,
+            @Query("phone") String phone
+    );
+
     //更改兼职意向
     @POST("employee/update")
     Observable<BaseBean> updateIntent(

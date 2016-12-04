@@ -35,6 +35,10 @@
             android:name=".model.me.EnrollActivitiy"
             android:windowSoftInputMode="stateHidden">
         </activity>
+        <activity
+            android:name=".model.me.ReleaseActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
         <activity android:name=".model.index.JobDetailActivity">
         </activity>
     </application>

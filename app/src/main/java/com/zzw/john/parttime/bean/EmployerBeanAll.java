@@ -26,6 +26,7 @@ public class EmployerBeanAll extends BaseBean {
         private String name;
         private String nickname;
         private String password;
+        private String phone;
         private String schoolName;
         private String sex;
 
@@ -93,6 +94,14 @@ public class EmployerBeanAll extends BaseBean {
             this.password = password;
         }
 
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
         public String getSchoolName() {
             return schoolName;
         }
@@ -108,5 +117,7 @@ public class EmployerBeanAll extends BaseBean {
         public void setSex(String sex) {
             this.sex = sex;
         }
+
+
     }
 }

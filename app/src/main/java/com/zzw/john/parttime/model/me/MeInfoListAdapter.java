@@ -78,6 +78,8 @@ public class MeInfoListAdapter extends BaseAdapter {
                 break;
             case 5:
                 itemNameTV.setText("电话号码");
+                if (employer.getPhone()!=null)
+                    itemInfoTV.setText(employer.getPhone());
                 break;
             default:
                 break;
