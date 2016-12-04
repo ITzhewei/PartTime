@@ -7,6 +7,7 @@ import com.zzw.john.parttime.bean.JobBean;
 
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -39,8 +40,9 @@ public interface Api {
     );
 
     //得到我报名过的兼职
-    @POST("statusrecord/queryStatusRecordByEmployeeID")
+    @POST("statusrecord/queryStatusRecordByEmployeeID/{type}")
     Observable<JobBean> queryStatusRecordByEmployeeID(
+            @Path("type") Integer type,
             @Query("employeeID") Integer employeeID
     );
 

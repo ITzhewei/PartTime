@@ -71,6 +71,12 @@ public class JobDetailActivity extends AppCompatActivity {
         mDetailType.setText(mJobListBean.getType());
         mDetailAddress.setText(mJobListBean.getAddress());
         mDetailRequest.setText(mJobListBean.getRemark());
+
+        if (!this.getIntent().getSerializableExtra("from").equals("AllJobActivity")){
+            mBtnSignup.setVisibility(View.INVISIBLE);
+            mBtnBack.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     private void initData() {

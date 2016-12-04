@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
 import com.zzw.john.parttime.bean.BaseBean;
@@ -35,6 +36,7 @@ import com.zzw.john.parttime.utils.UIUtils;
 import java.util.Calendar;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -91,9 +93,19 @@ public class ResumeActivity extends AppCompatActivity {
                                         Observable<BaseBean> register = api.updateName(employer.getId(),editText.getText().toString());
                                         register.subscribeOn(Schedulers.io())
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(new Action1<BaseBean>() {
+                                                .subscribe(new Subscriber<BaseBean>() {
                                                     @Override
-                                                    public void call(BaseBean baseBean) {
+                                                    public void onCompleted() {}
+
+                                                    @Override
+                                                    public void onError(Throwable e) {
+                                                        Logger.d(e);
+                                                        progressDialog.dismiss();
+                                                        UIUtils.showToast("超时,请重试!");
+                                                    }
+
+                                                    @Override
+                                                    public void onNext(BaseBean baseBean) {
                                                         progressDialog.dismiss();
                                                         if (baseBean.getFlag().equals("true")) {
                                                             UIUtils.showToast("更改成功");
@@ -124,9 +136,19 @@ public class ResumeActivity extends AppCompatActivity {
                                 Observable<BaseBean> register = api.updateAge(employer.getId(),age);
                                 register.subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new Action1<BaseBean>() {
+                                        .subscribe(new Subscriber<BaseBean>() {
                                             @Override
-                                            public void call(BaseBean baseBean) {
+                                            public void onCompleted() {}
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                Logger.d(e);
+                                                progressDialog.dismiss();
+                                                UIUtils.showToast("超时,请重试!");
+                                            }
+
+                                            @Override
+                                            public void onNext(BaseBean baseBean) {
                                                 progressDialog.dismiss();
                                                 if (baseBean.getFlag().equals("true")) {
                                                     UIUtils.showToast("更改成功");
@@ -157,9 +179,19 @@ public class ResumeActivity extends AppCompatActivity {
                                         Observable<BaseBean> register = api.updateSex(employer.getId(),sex);
                                         register.subscribeOn(Schedulers.io())
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(new Action1<BaseBean>() {
+                                                .subscribe(new Subscriber<BaseBean>() {
                                                     @Override
-                                                    public void call(BaseBean baseBean) {
+                                                    public void onCompleted() {}
+
+                                                    @Override
+                                                    public void onError(Throwable e) {
+                                                        Logger.d(e);
+                                                        progressDialog.dismiss();
+                                                        UIUtils.showToast("超时,请重试!");
+                                                    }
+
+                                                    @Override
+                                                    public void onNext(BaseBean baseBean) {
                                                         progressDialog.dismiss();
                                                         if (baseBean.getFlag().equals("true")) {
                                                             UIUtils.showToast("更改成功");
@@ -207,9 +239,19 @@ public class ResumeActivity extends AppCompatActivity {
                                 Observable<BaseBean> register = api.updateHeight(employer.getId(),statureNP.getValue());
                                 register.subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new Action1<BaseBean>() {
+                                        .subscribe(new Subscriber<BaseBean>() {
                                             @Override
-                                            public void call(BaseBean baseBean) {
+                                            public void onCompleted() {}
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                Logger.d(e);
+                                                progressDialog.dismiss();
+                                                UIUtils.showToast("超时,请重试!");
+                                            }
+
+                                            @Override
+                                            public void onNext(BaseBean baseBean) {
                                                 progressDialog.dismiss();
                                                 if (baseBean.getFlag().equals("true")) {
                                                     UIUtils.showToast("更改成功");
@@ -251,9 +293,19 @@ public class ResumeActivity extends AppCompatActivity {
                                 Observable<BaseBean> register = api.updateSchoolName(employer.getId(),schools[schoolNP.getValue()]);
                                 register.subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new Action1<BaseBean>() {
+                                        .subscribe(new Subscriber<BaseBean>() {
                                             @Override
-                                            public void call(BaseBean baseBean) {
+                                            public void onCompleted() {}
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                Logger.d(e);
+                                                progressDialog.dismiss();
+                                                UIUtils.showToast("超时,请重试!");
+                                            }
+
+                                            @Override
+                                            public void onNext(BaseBean baseBean) {
                                                 progressDialog.dismiss();
                                                 if (baseBean.getFlag().equals("true")) {
                                                     UIUtils.showToast("更改成功");
@@ -284,9 +336,19 @@ public class ResumeActivity extends AppCompatActivity {
                                         Observable<BaseBean> register = api.updatePhone(employer.getId(),phoneET.getText().toString());
                                         register.subscribeOn(Schedulers.io())
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(new Action1<BaseBean>() {
+                                                .subscribe(new Subscriber<BaseBean>() {
                                                     @Override
-                                                    public void call(BaseBean baseBean) {
+                                                    public void onCompleted() {}
+
+                                                    @Override
+                                                    public void onError(Throwable e) {
+                                                        Logger.d(e);
+                                                        progressDialog.dismiss();
+                                                        UIUtils.showToast("超时,请重试!");
+                                                    }
+
+                                                    @Override
+                                                    public void onNext(BaseBean baseBean) {
                                                         progressDialog.dismiss();
                                                         if (baseBean.getFlag().equals("true")) {
                                                             UIUtils.showToast("更改成功");
@@ -344,6 +406,12 @@ public class ResumeActivity extends AppCompatActivity {
         Button cancelBtn=new Button(this);
         LinearLayout.LayoutParams layoutParams;
         int layoutWidth=superLayout.getWidth();
+        final String initContent;
+
+        if (source==1)
+            initContent=intentET.getText().toString();
+        else
+            initContent=commentET.getText().toString();
 
         newLayout.setOrientation(LinearLayout.HORIZONTAL);
         confirmBtn.setText("确认");
@@ -369,41 +437,65 @@ public class ResumeActivity extends AppCompatActivity {
                     Observable<BaseBean> register = api.updateIntent(employer.getId(),editContent);
                     register.subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<BaseBean>() {
+                            .subscribe(new Subscriber<BaseBean>() {
                                 @Override
-                                public void call(BaseBean baseBean) {
+                                public void onCompleted() {}
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Logger.d(e);
+                                    progressDialog.dismiss();
+                                    UIUtils.showToast("超时,请重试!");
+                                }
+
+                                @Override
+                                public void onNext(BaseBean baseBean) {
                                     progressDialog.dismiss();
                                     if (baseBean.getFlag().equals("true")) {
                                         UIUtils.showToast("更改成功");
                                         employer.setIntent(editContent);
+                                        intentEditLLO.setVisibility(View.VISIBLE);
+                                        intentET.setInputType(InputType.TYPE_NULL);
+                                        superLayout.removeView(newLayout);
                                     } else {
                                         UIUtils.showToast("更改失败,请重试");
                                     }
                                 }
                             });
-                    intentEditLLO.setVisibility(View.VISIBLE);
-                    intentET.setInputType(InputType.TYPE_NULL);
+
                 }else {
                     editContent=commentET.getText().toString();
                     Observable<BaseBean> register = api.updateAdvantage(employer.getId(),editContent);
                     register.subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<BaseBean>() {
+                            .subscribe(new Subscriber<BaseBean>() {
                                 @Override
-                                public void call(BaseBean baseBean) {
+                                public void onCompleted() {}
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Logger.d(e);
+                                    progressDialog.dismiss();
+                                    UIUtils.showToast("超时,请重试!");
+                                }
+
+                                @Override
+                                public void onNext(BaseBean baseBean) {
                                     progressDialog.dismiss();
                                     if (baseBean.getFlag().equals("true")) {
                                         UIUtils.showToast("更改成功");
                                         employer.setAdvantage(editContent);
+                                        commentEditLLO.setVisibility(View.VISIBLE);
+                                        commentET.setInputType(InputType.TYPE_NULL);
+                                        superLayout.removeView(newLayout);
                                     } else {
                                         UIUtils.showToast("更改失败,请重试");
                                     }
                                 }
                             });
-                    commentEditLLO.setVisibility(View.VISIBLE);
-                    commentET.setInputType(InputType.TYPE_NULL);
+
                 }
-                superLayout.removeView(newLayout);
+
             }
         });
 
@@ -411,9 +503,11 @@ public class ResumeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (source==1){
+                    intentET.setText(initContent);
                     intentEditLLO.setVisibility(View.VISIBLE);
                     intentET.setInputType(InputType.TYPE_NULL);
                 }else {
+                    commentET.setText(initContent);
                     commentEditLLO.setVisibility(View.VISIBLE);
                     commentET.setInputType(InputType.TYPE_NULL);
                 }
