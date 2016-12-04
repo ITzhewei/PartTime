@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.orhanobut.logger.Logger;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.bean.BaseBean;
 import com.zzw.john.parttime.componments.ApiClient;
@@ -68,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onError(Throwable e) {
+                                    Logger.d(e);
                                     UIUtils.showToast("超时,请重试!");
                                 }
 

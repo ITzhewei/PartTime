@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.orhanobut.logger.Logger;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
 import com.zzw.john.parttime.bean.AddBean;
@@ -72,11 +73,9 @@ public class JobDetailActivity extends AppCompatActivity {
         mDetailRequest.setText(mJobListBean.getRemark());
     }
 
-
     private void initData() {
         mJobListBean = (JobBean.JobListBean) this.getIntent().getSerializableExtra("bean");
     }
-
 
     @OnClick({R.id.btn_signup, R.id.btn_back})
     public void onClick(View view) {
@@ -104,6 +103,7 @@ public class JobDetailActivity extends AppCompatActivity {
 
                                             @Override
                                             public void onError(Throwable e) {
+                                                Logger.d(e);
                                                 UIUtils.showToast("超时,请重试!");
                                             }
 

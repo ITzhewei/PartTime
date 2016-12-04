@@ -29,6 +29,23 @@ public class EmployeeBeanAll extends BaseBean {
         private String schoolName;
         private String sex;
 
+        @Override
+        public String toString() {
+            return "EmployeeBean{" +
+                    "advantage='" + advantage + '\'' +
+                    ", age=" + age +
+                    ", height=" + height +
+                    ", id=" + id +
+                    ", intent='" + intent + '\'' +
+                    ", name='" + name + '\'' +
+                    ", nickname='" + nickname + '\'' +
+                    ", password='" + password + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", schoolName='" + schoolName + '\'' +
+                    ", sex='" + sex + '\'' +
+                    '}';
+        }
+
         public String getAdvantage() {
             return advantage;
         }

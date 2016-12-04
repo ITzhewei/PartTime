@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.bean.JobBean;
 import com.zzw.john.parttime.componments.ApiClient;
@@ -57,6 +58,7 @@ public class AllJobActivity extends AppCompatActivity {
 
                                @Override
                                public void onError(Throwable e) {
+                                   Logger.d(e);
                                    UIUtils.showToast("超时,请重试!");
                                }
 
