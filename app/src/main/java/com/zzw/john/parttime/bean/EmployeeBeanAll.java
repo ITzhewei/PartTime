@@ -4,7 +4,7 @@ package com.zzw.john.parttime.bean;
  * Created by john(Zhewei) on 2016/11/29.
  */
 
-public class EmployerBeanAll extends BaseBean {
+public class EmployeeBeanAll extends BaseBean {
 
 
     private EmployeeBean employee;

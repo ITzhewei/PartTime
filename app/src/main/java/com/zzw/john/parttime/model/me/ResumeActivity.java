@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
 import com.zzw.john.parttime.bean.BaseBean;
-import com.zzw.john.parttime.bean.EmployerBeanAll;
+import com.zzw.john.parttime.bean.EmployeeBeanAll;
 import com.zzw.john.parttime.componments.ApiClient;
 import com.zzw.john.parttime.service.Api;
 import com.zzw.john.parttime.utils.UIUtils;
@@ -47,7 +47,7 @@ public class ResumeActivity extends AppCompatActivity {
     private ListView meInfoLV;
     private ProgressDialog progressDialog;
 
-    private EmployerBeanAll.EmployeeBean employer=MyApplication.employerBean;
+    private EmployeeBeanAll.EmployeeBean employer=MyApplication.employerBean;
 
     Api api;
 
@@ -436,9 +436,9 @@ public class ResumeActivity extends AppCompatActivity {
     private class ResumeListAdapter extends BaseAdapter {
 
         private LayoutInflater layoutInflater;
-        private EmployerBeanAll.EmployeeBean employer;
+        private EmployeeBeanAll.EmployeeBean employer;
 
-        public ResumeListAdapter(EmployerBeanAll.EmployeeBean employer){
+        public ResumeListAdapter(EmployeeBeanAll.EmployeeBean employer){
             this.layoutInflater=LayoutInflater.from(UIUtils.getContext());
             this.employer=employer;
         }

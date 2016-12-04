@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
-import com.zzw.john.parttime.bean.EmployerBeanAll;
+import com.zzw.john.parttime.bean.EmployeeBeanAll;
 
 /**
  * Created by ZheWei on 2016/9/13.
@@ -24,7 +24,7 @@ public class MyApplication extends Application {
     private static Handler handler;
 
     //保存的个人信息
-    public static EmployerBeanAll.EmployeeBean employerBean;
+    public static EmployeeBeanAll.EmployeeBean employerBean;
 
     @Override
     public void onCreate() {

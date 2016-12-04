@@ -1,19 +1,13 @@
 package com.zzw.john.parttime.service;
 
-import android.widget.ListView;
-
 import com.zzw.john.parttime.bean.BaseBean;
-import com.zzw.john.parttime.bean.EmployerBeanAll;
+import com.zzw.john.parttime.bean.EmployeeBeanAll;
 import com.zzw.john.parttime.bean.JobBean;
 
-import java.util.ArrayList;
-
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
-import rx.observers.Observers;
 
 /**
  * Created by john on 2016/11/1.
@@ -33,7 +27,7 @@ public interface   Api {
 
     //登录
     @POST("employee/login")
-    Observable<EmployerBeanAll> login(
+    Observable<EmployeeBeanAll> login(
             @Query("nickname") String nickname,
             @Query("password") String password
     );
