@@ -1,5 +1,6 @@
 package com.zzw.john.parttime.model.me;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
+import com.zzw.john.parttime.utils.UIUtils;
 
 /**
  * Created by john on 2016/11/1.
@@ -33,7 +37,7 @@ public class MeFragment extends Fragment {
         userNameTV.setText(MyApplication.employerBean.getNickname());
 
         choiceLV=(ListView)view.findViewById(R.id.choiceLV);
-        choiceLV.setAdapter(new MeListAdapter(getContext()));
+        choiceLV.setAdapter(new MeListAdapter());
         choiceLV.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -50,5 +54,49 @@ public class MeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    //适配器
+    private class MeListAdapter extends BaseAdapter {
+
+        private LayoutInflater layoutInflater;
+
+        public MeListAdapter(){
+            this.layoutInflater=LayoutInflater.from(UIUtils.getContext());
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView listPicIV,listArrowIV;
+            TextView listNameTV;
+            if (convertView==null){
+                convertView=layoutInflater.inflate(R.layout.list_me_item,null);
+            }
+
+            listNameTV=(TextView)convertView.findViewById(R.id.listNameTV);
+            if (position==0) {
+                listNameTV.setText("我的简历");
+            }else if (position==1){
+                listNameTV.setText("我的报名");
+            }else {
+                listNameTV.setText("发布兼职");
+            }
+            return convertView;
+        }
     }
 }

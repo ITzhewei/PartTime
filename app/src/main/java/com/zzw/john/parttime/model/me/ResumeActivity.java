@@ -4,20 +4,21 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatCallback;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
@@ -46,7 +47,7 @@ public class ResumeActivity extends AppCompatActivity {
     private ListView meInfoLV;
     private ProgressDialog progressDialog;
 
-    private EmployerBeanAll.EmployerBean employer=MyApplication.employerBean;
+    private EmployerBeanAll.EmployeeBean employer=MyApplication.employerBean;
 
     Api api;
 
@@ -64,7 +65,7 @@ public class ResumeActivity extends AppCompatActivity {
         commentLLO=(LinearLayout)findViewById(R.id.commentLLO);
         commentEditLLO=(LinearLayout)findViewById(R.id.commentEditLLO);
         meInfoLV=(ListView)findViewById(R.id.meInfoLV);
-        meInfoLV.setAdapter(new MeInfoListAdapter(UIUtils.getContext(),employer));
+        meInfoLV.setAdapter(new ResumeListAdapter(employer));
 
         api = ApiClient.getApi();
 
@@ -431,5 +432,76 @@ public class ResumeActivity extends AppCompatActivity {
         return (int)(dpValue*scale+0.5f);
     }
 
+    //适配器
+    private class ResumeListAdapter extends BaseAdapter {
+
+        private LayoutInflater layoutInflater;
+        private EmployerBeanAll.EmployeeBean employer;
+
+        public ResumeListAdapter(EmployerBeanAll.EmployeeBean employer){
+            this.layoutInflater=LayoutInflater.from(UIUtils.getContext());
+            this.employer=employer;
+        }
+
+        @Override
+        public int getCount() { return 6;}
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView itemNameTV,itemInfoTV;
+            ImageView itemArrowIV;
+            if (convertView==null){
+                convertView=layoutInflater.inflate(R.layout.list_meresume_item,null);
+            }
+            itemNameTV=(TextView)convertView.findViewById(R.id.itemNameTV);
+            itemInfoTV=(TextView)convertView.findViewById(R.id.itemInfoTV);
+            itemArrowIV=(ImageView)convertView.findViewById(R.id.itemArrowIV);
+            switch (position){
+                case 0:
+                    itemNameTV.setText("真实姓名");
+                    if (employer.getName()!=null)
+                        itemInfoTV.setText(employer.getName());
+                    break;
+                case 1:
+                    itemNameTV.setText("年龄");
+                    if (employer.getAge()!=0)
+                        itemInfoTV.setText(Integer.toString(employer.getAge()));
+                    break;
+                case 2:
+                    itemNameTV.setText("性别");
+                    if (employer.getSex()!=null)
+                        itemInfoTV.setText(employer.getSex());
+                    break;
+                case 3:
+                    itemNameTV.setText("身高");
+                    if (employer.getHeight()!=0)
+                        itemInfoTV.setText(Integer.toString(employer.getHeight())+"cm");
+                    break;
+                case 4:
+                    itemNameTV.setText("所在学校");
+                    if (employer.getSchoolName()!=null)
+                        itemInfoTV.setText(employer.getSchoolName());
+                    break;
+                case 5:
+                    itemNameTV.setText("电话号码");
+                    if (employer.getPhone()!=null)
+                        itemInfoTV.setText(employer.getPhone());
+                    break;
+                default:
+                    break;
+            }
+            return convertView;
+        }
+    }
 
 }

@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
-import com.google.gson.Gson;
 import com.zzw.john.parttime.MainActivity;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
@@ -27,7 +25,6 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.observers.Observers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -82,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                                     String flag = employerBeanAll.getFlag();
                                     if (flag.equals("true")) {
                                         //保存个人信息
-                                        MyApplication.employerBean = employerBeanAll.getEmployer();
+                                        MyApplication.employerBean = employerBeanAll.getEmployee();
                                         //跳转主页
                                         Intent main = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(main);

@@ -11,14 +11,34 @@ public class JobBean {
 
     private List<JobListBean> jobList;
 
+    private List<String> nameList;
+
+    private List<Integer> stateList;
+
     public List<JobListBean> getJobList() {
         return jobList;
     }
+
 
     public void setJobList(List<JobListBean> jobList) {
         this.jobList = jobList;
     }
 
+    public List<String> getNameList() {
+        return nameList;
+    }
+
+    public void setNameList(List<String> nameList) {
+        this.nameList = nameList;
+    }
+
+    public List<Integer> getStateList() {
+        return stateList;
+    }
+
+    public void setStateList(List<Integer> stateList) {
+        this.stateList = stateList;
+    }
 
     public static class JobListBean implements Serializable {
         private String address;

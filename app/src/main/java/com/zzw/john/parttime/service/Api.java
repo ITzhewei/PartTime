@@ -1,8 +1,12 @@
 package com.zzw.john.parttime.service;
 
+import android.widget.ListView;
+
 import com.zzw.john.parttime.bean.BaseBean;
 import com.zzw.john.parttime.bean.EmployerBeanAll;
 import com.zzw.john.parttime.bean.JobBean;
+
+import java.util.ArrayList;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -37,6 +41,14 @@ public interface   Api {
     @GET("job/queryAllTypeJob")
     Observable<JobBean> queryAllTypeJob(
     );
+
+    //得到我报名过的兼职
+    @POST("statusrecord/queryStatusRecordByEmployeeID")
+    Observable<JobBean> queryStatusRecordByEmployeeID(
+            @Query("employeeID") Integer employeeID
+    );
+
+
 
     //更改真实姓名
     @POST("employee/update")

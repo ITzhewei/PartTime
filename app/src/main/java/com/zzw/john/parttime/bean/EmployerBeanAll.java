@@ -7,17 +7,16 @@ package com.zzw.john.parttime.bean;
 public class EmployerBeanAll extends BaseBean {
 
 
-    private EmployerBean employer;
-
-    public EmployerBean getEmployer() {
-        return employer;
+    private EmployeeBean employee;
+    public EmployeeBean getEmployee() {
+        return employee;
     }
 
-    public void setEmployer(EmployerBean employer) {
-        this.employer = employer;
+    public void setEmployee(EmployeeBean employee) {
+        this.employee = employee;
     }
 
-    public static class EmployerBean {
+    public static class EmployeeBean {
         private String advantage;
         private int age;
         private int height;
