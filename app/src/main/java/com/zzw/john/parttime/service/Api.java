@@ -46,7 +46,6 @@ public interface Api {
             @Query("employeeID") Integer employeeID
     );
 
-
     //报名一个兼职
     @POST("statusrecord/add")
     Observable<AddBean> add(

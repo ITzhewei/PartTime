@@ -60,7 +60,6 @@ public class EnrollActivitiy extends AppCompatActivity {
     }
 
     private void initData() {
-        System.out.println(MyApplication.employeeBean.getId());
         Observable<JobBean> jobBeanObservable = api.queryStatusRecordByEmployeeID(0,MyApplication.employeeBean.getId());
         jobBeanObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
