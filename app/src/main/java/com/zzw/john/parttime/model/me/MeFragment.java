@@ -43,10 +43,8 @@ public class MeFragment extends Fragment {
                 Intent intent=null;
                 if (position==0){
                     intent=new Intent(getActivity(),ResumeActivity.class);
-                }else if (position==1){
-                    intent=new Intent(getActivity(),EnrollActivitiy.class);
-                }else {
-                    intent=new Intent(getActivity(),ReleaseActivity.class);
+                }else{
+                    intent=new Intent(getActivity(),EnrollActivity.class);
                 }
                 startActivity(intent);
             }
@@ -66,7 +64,7 @@ public class MeFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -81,19 +79,20 @@ public class MeFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView listPicIV,listArrowIV;
+            ImageView listPicIV;
             TextView listNameTV;
             if (convertView==null){
                 convertView=layoutInflater.inflate(R.layout.list_me_item,null);
             }
 
             listNameTV=(TextView)convertView.findViewById(R.id.listNameTV);
+            listPicIV=(ImageView)convertView.findViewById(R.id.listPicIV);
             if (position==0) {
+                listPicIV.setImageDrawable(getResources().getDrawable(R.mipmap.meinfo));
                 listNameTV.setText("我的简历");
-            }else if (position==1){
+            }else{
+                listPicIV.setImageDrawable(getResources().getDrawable(R.mipmap.enroll));
                 listNameTV.setText("我的报名");
-            }else {
-                listNameTV.setText("发布兼职");
             }
             return convertView;
         }

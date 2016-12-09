@@ -516,16 +516,6 @@ public class ResumeActivity extends AppCompatActivity {
         });
     }
 
-    private int PxToDp(int pxValue){
-        final float scale= UIUtils.getContext().getResources().getDisplayMetrics().density;
-        return (int)(pxValue/scale+0.5f);
-    }
-
-    private int DpToPx(int dpValue){
-        final float scale= UIUtils.getContext().getResources().getDisplayMetrics().density;
-        return (int)(dpValue*scale+0.5f);
-    }
-
     //适配器
     private class ResumeListAdapter extends BaseAdapter {
 
@@ -553,13 +543,11 @@ public class ResumeActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView itemNameTV,itemInfoTV;
-            ImageView itemArrowIV;
             if (convertView==null){
                 convertView=layoutInflater.inflate(R.layout.list_meresume_item,null);
             }
             itemNameTV=(TextView)convertView.findViewById(R.id.itemNameTV);
             itemInfoTV=(TextView)convertView.findViewById(R.id.itemInfoTV);
-            itemArrowIV=(ImageView)convertView.findViewById(R.id.itemArrowIV);
             switch (position){
                 case 0:
                     itemNameTV.setText("真实姓名");

@@ -18,7 +18,6 @@ import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
 import com.zzw.john.parttime.bean.JobBean;
 import com.zzw.john.parttime.componments.ApiClient;
-import com.zzw.john.parttime.model.index.AllJobActivity;
 import com.zzw.john.parttime.model.index.JobDetailActivity;
 import com.zzw.john.parttime.service.Api;
 import com.zzw.john.parttime.utils.UIUtils;
@@ -28,10 +27,9 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class EnrollActivitiy extends AppCompatActivity {
+public class EnrollActivity extends AppCompatActivity {
 
     private ListView enrollLV;
     private ProgressDialog progressDialog;
@@ -53,7 +51,7 @@ public class EnrollActivitiy extends AppCompatActivity {
     private void initView() {
         enrollLV=(ListView)findViewById(R.id.enrollLV);
 
-        progressDialog=new ProgressDialog(EnrollActivitiy.this);
+        progressDialog=new ProgressDialog(EnrollActivity.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("请稍等");
         progressDialog.show();
@@ -74,6 +72,7 @@ public class EnrollActivitiy extends AppCompatActivity {
                         Logger.d(e);
                         progressDialog.dismiss();
                         UIUtils.showToast("超时,请重试!");
+                        EnrollActivity.this.finish();
                     }
 
                     @Override
@@ -154,7 +153,7 @@ public class EnrollActivitiy extends AppCompatActivity {
             detailBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent jobDetail = new Intent(EnrollActivitiy.this, JobDetailActivity.class);
+                    Intent jobDetail = new Intent(EnrollActivity.this, JobDetailActivity.class);
                     jobDetail.putExtra("bean",jobListBean);
                     jobDetail.putExtra("from","EnrollActivity");
                     startActivity(jobDetail);

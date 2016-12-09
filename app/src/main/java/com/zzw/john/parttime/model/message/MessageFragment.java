@@ -12,9 +12,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -40,8 +43,8 @@ import rx.schedulers.Schedulers;
 public class MessageFragment extends Fragment {
 
     private ListView messageLV;
+    private ScrollView messageSV;
     private SwipeRefreshLayout messageSRLO;
-//    private Handler refreshHandler;
     private ProgressDialog progressDialog;
 
     private Api api;
@@ -61,7 +64,21 @@ public class MessageFragment extends Fragment {
 
     private void initView(View view) {
         messageLV=(ListView)view.findViewById(R.id.messageLV);
+        messageSV=(ScrollView)view.findViewById(R.id.messageSV);
         messageSRLO=(SwipeRefreshLayout)view.findViewById(R.id.messageSRLO);
+
+        messageLV.setOnScrollListener(new SwipeListViewOnScrollListener(messageSRLO, new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        }));
+
         messageSRLO.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -191,6 +208,39 @@ public class MessageFragment extends Fragment {
             });
 
             return convertView;
+        }
+    }
+
+    private static class SwipeListViewOnScrollListener implements AbsListView.OnScrollListener{
+
+        private SwipeRefreshLayout mSwipeView;
+        private AbsListView.OnScrollListener mOnScrollListener;
+
+        public SwipeListViewOnScrollListener(SwipeRefreshLayout swipeView){
+            mSwipeView=swipeView;
+        }
+
+        public SwipeListViewOnScrollListener(SwipeRefreshLayout swipeView,AbsListView.OnScrollListener onScrollListener){
+            mSwipeView=swipeView;
+            mOnScrollListener=onScrollListener;
+        }
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            View firstView = view.getChildAt(firstVisibleItem);
+
+            if(firstVisibleItem==0&&(firstView==null||firstView.getTop()==0))
+                mSwipeView.setEnabled(true);
+            else
+                mSwipeView.setEnabled(false);
+
+            if(null!=mOnScrollListener)
+                mOnScrollListener.onScroll(view,firstVisibleItem,visibleItemCount,totalItemCount);
         }
     }
 }
