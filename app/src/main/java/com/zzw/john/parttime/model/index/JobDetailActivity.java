@@ -98,7 +98,7 @@ public class JobDetailActivity extends AppCompatActivity {
                         .setPositiveButton("提交", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Observable<AddBean> add = mApi.add(mJobListBean.getEmployerID(), MyApplication.employeeBean.getId(), mJobListBean.getId());
+                                Observable<AddBean> add = mApi.add( MyApplication.employeeBean.getId(),mJobListBean.getEmployerID(), mJobListBean.getId());
                                 add.subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(new Subscriber<AddBean>() {

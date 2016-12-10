@@ -15,7 +15,7 @@
         </activity>
         <activity
             android:name=".model.login.LoginActivity"
-            android:label="Login In">
+            android:label="PartTime">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
