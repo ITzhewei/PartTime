@@ -29,7 +29,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class AllJobActivity extends AppCompatActivity {
+public class NextActivity extends AppCompatActivity {
 
     @BindView(R.id.rl_alljob)
     RecyclerView mRlAlljob;
@@ -41,15 +41,17 @@ public class AllJobActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_job);
+        setContentView(R.layout.activity_next);
+
         ButterKnife.bind(this);
         mApi = ApiClient.getApi();
         initView();
         initData();
+
     }
 
     private void initData() {
-        Observable<JobBean> jobBeanObservable = mApi.queryAllTypeJob();
+        Observable<JobBean> jobBeanObservable = mApi.queryJobByType("附近兼职");
         jobBeanObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<JobBean>() {
@@ -68,7 +70,7 @@ public class AllJobActivity extends AppCompatActivity {
                     public void onNext(JobBean jobBean) {
                         List<JobBean.JobListBean> jobList = jobBean.getJobList();
                         //设置
-                        mRlAlljob.setAdapter(new MyAdapter(jobList));
+                        mRlAlljob.setAdapter(new NextActivity.MyAdapter(jobList));
                         mProgressDialog.dismiss();
                     }
                 });
@@ -94,12 +96,12 @@ public class AllJobActivity extends AppCompatActivity {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(UIUtils.getContext()).inflate(R.layout.list_job_item, parent, false);
-            return new MyHolder(view);
+            return new NextActivity.MyAdapter.MyHolder(view);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            MyHolder myHolder = (MyHolder) holder;
+            NextActivity.MyAdapter.MyHolder myHolder = (NextActivity.MyAdapter.MyHolder) holder;
             myHolder.bindView(jobList.get(position));
         }
 
@@ -134,11 +136,12 @@ public class AllJobActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent jobDetail = new Intent(AllJobActivity.this, JobDetailActivity.class);
+                Intent jobDetail = new Intent(NextActivity.this, JobDetailActivity.class);
                 jobDetail.putExtra("bean", mJobListBean);
-                jobDetail.putExtra("from", "AllJobActivity");
+                jobDetail.putExtra("from", "NextActivity");
                 startActivity(jobDetail);
             }
         }
     }
+
 }

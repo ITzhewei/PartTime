@@ -74,16 +74,28 @@ public class IndexFragment extends Fragment {
                 startActivity(alljob);
                 break;
             case R.id.img_t2:
+                Intent goodjob = new Intent(getActivity(), GoodJobActivity.class);
+                startActivity(goodjob);
                 break;
             case R.id.img_t3:
+                Intent intent = new Intent(getActivity(), NextActivity.class);
+                startActivity(intent);
                 break;
             case R.id.img_t4:
+                Intent intent1 = new Intent(getActivity(), WeekActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.img_t_left:
+                Intent intent2 = new Intent(getActivity(), WeiActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.img_t_right_1:
+                Intent intent3 = new Intent(getActivity(), FindActivity.class);
+                startActivity(intent3);
                 break;
             case R.id.img_t_right_2:
+                Intent intent4 = new Intent(getActivity(), YiActivity.class);
+                startActivity(intent4);
                 break;
         }
     }

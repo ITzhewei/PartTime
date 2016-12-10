@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
         mEtPassword.setText(ShareP.getString("password"));
     }
 
-
     @OnClick({R.id.btn_login, R.id.btn_register})
     public void onClick(View view) {
         switch (view.getId()) {

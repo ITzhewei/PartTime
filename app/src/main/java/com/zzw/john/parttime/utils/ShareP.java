@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 public class ShareP {
 
 
-
     public static void setString(String tag, String content) {
         PreferenceManager.getDefaultSharedPreferences(UIUtils.getContext()).edit()
                 .putString(tag, content).apply();

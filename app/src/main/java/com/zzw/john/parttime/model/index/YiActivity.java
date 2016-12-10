@@ -16,20 +16,18 @@ import com.github.lzyzsd.randomcolor.RandomColor;
 import com.orhanobut.logger.Logger;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.bean.JobBean;
-import com.zzw.john.parttime.componments.ApiClient;
 import com.zzw.john.parttime.service.Api;
 import com.zzw.john.parttime.utils.UIUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class AllJobActivity extends AppCompatActivity {
+public class YiActivity extends AppCompatActivity {
 
     @BindView(R.id.rl_alljob)
     RecyclerView mRlAlljob;
@@ -41,13 +39,8 @@ public class AllJobActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_job);
-        ButterKnife.bind(this);
-        mApi = ApiClient.getApi();
-        initView();
-        initData();
+        setContentView(R.layout.activity_yi);
     }
-
     private void initData() {
         Observable<JobBean> jobBeanObservable = mApi.queryAllTypeJob();
         jobBeanObservable.subscribeOn(Schedulers.io())
@@ -68,7 +61,7 @@ public class AllJobActivity extends AppCompatActivity {
                     public void onNext(JobBean jobBean) {
                         List<JobBean.JobListBean> jobList = jobBean.getJobList();
                         //设置
-                        mRlAlljob.setAdapter(new MyAdapter(jobList));
+                        mRlAlljob.setAdapter(new YiActivity.MyAdapter(jobList));
                         mProgressDialog.dismiss();
                     }
                 });
@@ -94,12 +87,12 @@ public class AllJobActivity extends AppCompatActivity {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(UIUtils.getContext()).inflate(R.layout.list_job_item, parent, false);
-            return new MyHolder(view);
+            return new YiActivity.MyAdapter.MyHolder(view);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            MyHolder myHolder = (MyHolder) holder;
+            YiActivity.MyAdapter.MyHolder myHolder = (YiActivity.MyAdapter.MyHolder) holder;
             myHolder.bindView(jobList.get(position));
         }
 
@@ -134,7 +127,7 @@ public class AllJobActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent jobDetail = new Intent(AllJobActivity.this, JobDetailActivity.class);
+                Intent jobDetail = new Intent(YiActivity.this, JobDetailActivity.class);
                 jobDetail.putExtra("bean", mJobListBean);
                 jobDetail.putExtra("from", "AllJobActivity");
                 startActivity(jobDetail);

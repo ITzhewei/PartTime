@@ -12,6 +12,7 @@ import com.zzw.john.parttime.bean.EmployeeBeanAll;
  * Created by ZheWei on 2016/9/13.
  */
 public class MyApplication extends Application {
+
     //得到上下文
     private static Context context;
     //得到主线程

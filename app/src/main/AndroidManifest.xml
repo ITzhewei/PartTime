@@ -37,6 +37,18 @@
         </activity>
         <activity android:name=".model.index.JobDetailActivity">
         </activity>
+        <activity android:name=".model.index.GoodJobActivity">
+        </activity>
+        <activity android:name=".model.index.NextActivity">
+        </activity>
+        <activity android:name=".model.index.WeekActivity">
+        </activity>
+        <activity android:name=".model.index.WeiActivity">
+        </activity>
+        <activity android:name=".model.index.FindActivity">
+        </activity>
+        <activity android:name=".model.index.YiActivity">
+        </activity>
     </application>
 
 </manifest>

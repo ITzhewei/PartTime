@@ -29,7 +29,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class AllJobActivity extends AppCompatActivity {
+public class WeekActivity extends AppCompatActivity {
 
     @BindView(R.id.rl_alljob)
     RecyclerView mRlAlljob;
@@ -37,15 +37,16 @@ public class AllJobActivity extends AppCompatActivity {
     Api mApi;
 
     ProgressDialog mProgressDialog;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_job);
+        setContentView(R.layout.activity_week);
         ButterKnife.bind(this);
         mApi = ApiClient.getApi();
         initView();
         initData();
+        
     }
 
     private void initData() {
@@ -68,7 +69,7 @@ public class AllJobActivity extends AppCompatActivity {
                     public void onNext(JobBean jobBean) {
                         List<JobBean.JobListBean> jobList = jobBean.getJobList();
                         //设置
-                        mRlAlljob.setAdapter(new MyAdapter(jobList));
+                        mRlAlljob.setAdapter(new WeekActivity.MyAdapter(jobList));
                         mProgressDialog.dismiss();
                     }
                 });
@@ -94,12 +95,12 @@ public class AllJobActivity extends AppCompatActivity {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(UIUtils.getContext()).inflate(R.layout.list_job_item, parent, false);
-            return new MyHolder(view);
+            return new WeekActivity.MyAdapter.MyHolder(view);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            MyHolder myHolder = (MyHolder) holder;
+            WeekActivity.MyAdapter.MyHolder myHolder = (WeekActivity.MyAdapter.MyHolder) holder;
             myHolder.bindView(jobList.get(position));
         }
 
@@ -134,11 +135,12 @@ public class AllJobActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent jobDetail = new Intent(AllJobActivity.this, JobDetailActivity.class);
+                Intent jobDetail = new Intent(WeekActivity.this, JobDetailActivity.class);
                 jobDetail.putExtra("bean", mJobListBean);
-                jobDetail.putExtra("from", "AllJobActivity");
+                jobDetail.putExtra("from", "WeekActivity");
                 startActivity(jobDetail);
             }
         }
     }
+    
 }

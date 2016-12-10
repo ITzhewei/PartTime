@@ -35,8 +35,14 @@ public interface Api {
     );
 
     //得到全部兼职
-    @GET("job/queryAllTypeJob")
+    @GET("job/queryAllTypeJob/")
     Observable<JobBean> queryAllTypeJob(
+    );
+
+    //
+    @GET("job/queryJobByType/")
+    Observable<JobBean> queryJobByType(
+            @Query("type") String type
     );
 
     //得到我报名过的兼职
