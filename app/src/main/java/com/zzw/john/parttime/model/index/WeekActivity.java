@@ -50,7 +50,7 @@ public class WeekActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        Observable<JobBean> jobBeanObservable = mApi.queryAllTypeJob();
+        Observable<JobBean> jobBeanObservable = mApi.queryJobByType("周末兼职");
         jobBeanObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<JobBean>() {

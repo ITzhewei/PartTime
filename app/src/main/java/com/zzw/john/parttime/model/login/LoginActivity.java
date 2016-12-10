@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.orhanobut.logger.Logger;
 import com.zzw.john.parttime.MainActivity;
 import com.zzw.john.parttime.R;
@@ -19,6 +19,7 @@ import com.zzw.john.parttime.model.register.RegisterActivity;
 import com.zzw.john.parttime.service.Api;
 import com.zzw.john.parttime.utils.ShareP;
 import com.zzw.john.parttime.utils.UIUtils;
+import com.zzw.john.parttime.widget.ClearEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,16 +34,17 @@ import rx.schedulers.Schedulers;
  */
 
 public class LoginActivity extends AppCompatActivity {
-    @BindView(R.id.et_username)
-    BootstrapEditText mEtUsername;
-    @BindView(R.id.et_password)
-    BootstrapEditText mEtPassword;
-    @BindView(R.id.btn_login)
-    BootstrapButton mBtnLogin;
-    @BindView(R.id.btn_register)
-    BootstrapButton mBtnRegister;
+
 
     Api api;
+    @BindView(R.id.et_username)
+    ClearEditText mEtUsername;
+    @BindView(R.id.et_password)
+    ClearEditText mEtPassword;
+    @BindView(R.id.btn_login)
+    Button mBtnLogin;
+    @BindView(R.id.btn_register)
+    TextView mBtnRegister;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,12 +79,15 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onCompleted() {
 
+
                                 }
+
                                 @Override
                                 public void onError(Throwable e) {
                                     Logger.d(e);
                                     UIUtils.showToast("超时,请重试!");
                                 }
+
                                 @Override
                                 public void onNext(EmployeeBeanAll employeeBeanAll) {
                                     String flag = employeeBeanAll.getFlag();

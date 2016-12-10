@@ -49,7 +49,7 @@ public class FindActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        Observable<JobBean> jobBeanObservable = mApi.queryAllTypeJob();
+        Observable<JobBean> jobBeanObservable = mApi.queryJobByType("微任务");
         jobBeanObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<JobBean>() {
