@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.lzyzsd.randomcolor.RandomColor;
 import com.orhanobut.logger.Logger;
 import com.zzw.john.parttime.R;
 import com.zzw.john.parttime.base.MyApplication;
@@ -117,6 +119,7 @@ public class EnrollActivity extends AppCompatActivity {
 
             TextView jobNameTV,jobTypeTV,employerTV,stateTV;
             Button detailBtn;
+            ImageView employerIV;
 
             final JobBean.JobListBean jobListBean;
 
@@ -129,6 +132,9 @@ public class EnrollActivity extends AppCompatActivity {
             employerTV=(TextView)convertView.findViewById(R.id.employerTV);
             stateTV=(TextView)convertView.findViewById(R.id.stateTV);
             detailBtn=(Button)convertView.findViewById(R.id.detailBtn);
+            employerIV=(ImageView)convertView.findViewById(R.id.employerIV);
+
+            employerIV.setBackgroundColor(new RandomColor().randomColor());
 
             jobListBean=jobList.get(position);
 
